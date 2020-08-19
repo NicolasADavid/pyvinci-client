@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { Home } from './ui/views/Home/Home';
 import { Project } from './ui/views/Project/Project';
+import { CreateProject } from './ui/views/CreateProject/CreateProject';
 import { Register } from './ui/views/Register/Register';
 import { Login } from './ui/views/Login/Login';
 import Nav from './ui/components/Nav/Nav.js';
@@ -41,6 +42,7 @@ function App() {
         <Route exact path="/register" component={Register} />
 
         <Route path="/home" component={Home} />
+        <Route path="/projects/new" component={CreateProject} />
         <Route path="/projects/:id" component={Project} />
       </Switch>
     </div>

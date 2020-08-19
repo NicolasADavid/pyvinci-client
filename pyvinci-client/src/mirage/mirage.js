@@ -36,7 +36,7 @@ export function makeServer({ environment = "test" } = {}) {
         },
         // Not available in Register response
         token() {
-          return "token"
+          return "test token string"
         },
         // Not available in Register response
         expireAt() {
@@ -54,27 +54,35 @@ export function makeServer({ environment = "test" } = {}) {
       this.urlPrefix = config.apiBaseUrl;
       this.namespace = config.namespace;
 
-      // Auth
-      this.post("/register", ({users}) => {
+      /**
+       * Auth
+       */
+      this.post("auth/register", ({users}) => {
         return users.find(1).attrs
       },
       {
         // timing: config.lowLatencyTime
       })
-      this.post("/login", ({users}) => {
+      this.post("auth/login", ({users}) => {
         return users.find(1).attrs
       },
       {
         // timing: config.lowLatencyTime
       })
 
-      // Projects
+      /**
+       * Projects
+       */
       this.get("/projects", (schema) => {
         return schema.db.projects
       })
       this.get("/projects/:id", (schema, request) => {
         let id = request.params.id
         return schema.db.projects.find(id)
+      })
+      this.post("/projects", (schema, request) => {
+        const { name } = JSON.parse(request.requestBody)
+        return schema.db.projects.insert({name: name})
       })
     },
   })

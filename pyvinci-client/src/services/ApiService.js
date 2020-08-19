@@ -34,6 +34,9 @@ const ApiService = {
     getProject: function(id) {
         return Axios.get(`${apiBaseUrl}/projects/${id}`)
     },
+    createProject: function(projectName) {
+        return Axios.post(`${apiBaseUrl}/projects`, {name: projectName})
+    }
 };
 
 export default ApiService;

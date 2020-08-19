@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import './Home.css';
 import ProjectsList from '../../components/ProjectsList/ProjectsList';
+import { CreateProject } from '../CreateProject/CreateProject';
 import ApiService from '../../../services/ApiService';
+import { Redirect, Route } from 'react-router-dom';
 
 export function Home() {
 
@@ -14,6 +16,11 @@ export function Home() {
         })
     }, []);
 
+    const [navigateToNewProject, setNavigateToNewProject] = useState(false)
+    function openCreateProject() {
+        setNavigateToNewProject(true)
+    }
+
     return (
         <div className="Home">
             {projects ?
@@ -24,6 +31,17 @@ export function Home() {
                     Loading...
                 </div>
             }
+            <div>
+                <button onClick={openCreateProject}>
+                    Create Project
+                </button>
+
+                {navigateToNewProject ? <Redirect to='/projects/new' /> : null}
+                <Route 
+                    path={`/projects/new`}
+                    component={CreateProject}
+                />
+            </div>
         </div>
     );
 }
