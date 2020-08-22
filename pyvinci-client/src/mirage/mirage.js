@@ -1,4 +1,4 @@
-import { Server, Model, Factory } from "miragejs"
+import { Server, Model, Factory, Response } from "miragejs"
 import faker from "faker"
 
 const config = {
@@ -6,6 +6,7 @@ const config = {
   namespace: "api/v1",
   lowLatencyTime: 100,  
   highLatencyTime: 1000,
+  tokenValue: "TEST_TOKEN_VALUE"
 }
 
 export function makeServer({ environment = "test" } = {}) {
@@ -36,7 +37,7 @@ export function makeServer({ environment = "test" } = {}) {
         },
         // Not available in Register response
         token() {
-          return "token"
+          return config.tokenValue
         },
         // Not available in Register response
         expireAt() {
@@ -54,27 +55,38 @@ export function makeServer({ environment = "test" } = {}) {
       this.urlPrefix = config.apiBaseUrl;
       this.namespace = config.namespace;
 
-      // Auth
-      this.post("/register", ({users}) => {
+      /**
+       * Auth
+       */
+      this.post("auth/register", ({users}) => {
         return users.find(1).attrs
       },
       {
         // timing: config.lowLatencyTime
       })
-      this.post("/login", ({users}) => {
+      this.post("auth/login", ({users}) => {
         return users.find(1).attrs
       },
       {
         // timing: config.lowLatencyTime
       })
 
-      // Projects
-      this.get("/projects", (schema) => {
+      /**
+       * Projects
+       */
+      this.get("/projects", (schema, request) => {
+        if(request.requestHeaders["authorization"] != config.tokenValue) {
+          return new Response(401, {}, { error: 'No Authorization header provided.'});
+        }
         return schema.db.projects
       })
       this.get("/projects/:id", (schema, request) => {
         let id = request.params.id
         return schema.db.projects.find(id)
+      })
+      this.post("/projects", (schema, request) => {
+        const { name } = JSON.parse(request.requestBody)
+        return schema.db.projects.insert({name: name})
       })
     },
   })

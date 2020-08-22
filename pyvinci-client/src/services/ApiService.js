@@ -8,10 +8,6 @@ const ApiService = {
         return Axios.post(`${apiBaseUrl}/auth/login`, {
             userName: userName,
             password: password
-        }).then(res => {
-            console.log("login res: ", res)
-            localStorage.setItem('token', res.data.token);
-            return res
         }).catch(err => {
             console.error(err)
             throw err
@@ -30,10 +26,25 @@ const ApiService = {
 
     getProjects: function() {    
         return Axios.get(`${apiBaseUrl}/projects`)
+        .catch(err => {
+            console.error(err)
+            throw err
+        })
     },
     getProject: function(id) {
         return Axios.get(`${apiBaseUrl}/projects/${id}`)
+        .catch(err => {
+            console.error(err)
+            throw err
+        })
     },
+    createProject: function(projectName) {
+        return Axios.post(`${apiBaseUrl}/projects`, {name: projectName})
+        .catch(err => {
+            console.error(err)
+            throw err
+        })
+    }
 };
 
 export default ApiService;
