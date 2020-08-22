@@ -11,8 +11,8 @@ export function Project() {
 
     useEffect(() => {
         ApiService.getProject(id)
-        .then(res => {
-            setProject(res.data)
+        .then(data => {
+            setProject(data)
         })
     }, [id]);
 
@@ -21,7 +21,10 @@ export function Project() {
             {project ? 
                 <div>
                     <div>
-                        {project.name}
+                        {project.id}
+                    </div>
+                    <div>
+                        {project.keywords}
                     </div>
                 </div> :
                 <div>

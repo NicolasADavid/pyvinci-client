@@ -40,10 +40,12 @@ const UserService = {
             return false
         }
         
-        // Is expired?
-        let now = new Date().getTime()
-        let tokenExpiresAt = new Date(userData.expireAt).getTime()
-        return now < tokenExpiresAt
+        return true
+        // TODO: Uncomment to consider expirationDate of userData
+        // // Is expired?
+        // let now = new Date().getTime()
+        // let tokenExpiresAt = new Date(userData.expireAt).getTime()
+        // return now < tokenExpiresAt
     },
 
     getUsername: function() {
@@ -51,9 +53,18 @@ const UserService = {
         return data?.username
     },
 
+    getUserId: function() {
+        let data = this.getUserData()
+        return data?.id
+    },
+
     getToken: function() {
         let data = this.getUserData()
         return data?.token
+    },
+
+    logOut: function() {
+        this.setUserData(null)
     }
 };
 

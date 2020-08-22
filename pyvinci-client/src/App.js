@@ -21,7 +21,7 @@ Axios.interceptors.request.use(
     // Set Authorization header, if token exists
     const token = UserService.getToken()
     if(token){
-      req.headers.authorization = token
+      req.headers.authorization = `Bearer ${token}`
     }
     return req;
   },

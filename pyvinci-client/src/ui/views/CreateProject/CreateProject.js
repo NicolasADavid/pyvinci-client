@@ -20,10 +20,8 @@ export function CreateProject() {
 
     function handleSubmit(event) {
         ApiService.createProject(projectName)
-            .then(res => {
-                if(res.status >= 200 && res.status < 300){
-                    setSuccess(true)
-                }
+            .then(project => {
+                setSuccess(true)
             })
         event.preventDefault();
     }
