@@ -1,11 +1,11 @@
 import Axios from "axios";
 
-const apiBaseUrl = "http://localhost:9000/api/v1";
+const apiUrl = process.env.REACT_APP_API_BASE_URL+process.env.REACT_APP_API_NAMESPACE
 
 const ApiService = {
 
     login: function(userName, password) {
-        return Axios.post(`${apiBaseUrl}/auth/login`, {
+        return Axios.post(`${apiUrl}/auth/login`, {
             userName: userName,
             password: password
         }).catch(err => {
@@ -15,7 +15,7 @@ const ApiService = {
     },
     
     register: function(userName, password) {
-        return Axios.post(`${apiBaseUrl}/auth/register`, {
+        return Axios.post(`${apiUrl}/auth/register`, {
             userName: userName,
             password: password
         }).catch(err => {
@@ -25,21 +25,21 @@ const ApiService = {
     },
 
     getProjects: function() {    
-        return Axios.get(`${apiBaseUrl}/projects`)
+        return Axios.get(`${apiUrl}/projects`)
         .catch(err => {
             console.error(err)
             throw err
         })
     },
     getProject: function(id) {
-        return Axios.get(`${apiBaseUrl}/projects/${id}`)
+        return Axios.get(`${apiUrl}/projects/${id}`)
         .catch(err => {
             console.error(err)
             throw err
         })
     },
     createProject: function(projectName) {
-        return Axios.post(`${apiBaseUrl}/projects`, {name: projectName})
+        return Axios.post(`${apiUrl}/projects`, {name: projectName})
         .catch(err => {
             console.error(err)
             throw err

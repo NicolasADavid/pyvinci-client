@@ -2,7 +2,6 @@ import React from 'react';
 
 import styles from './Nav.css'
 import { NavLink } from 'react-router-dom';
-import UserService from '../../../services/UserService';
 
 const links = [
     {
@@ -20,8 +19,6 @@ const links = [
 ]
 
 export default function Nav({isLoggedIn}) {
-
-    console.log(isLoggedIn)
 
     const linkElements = 
         links.filter(link => {

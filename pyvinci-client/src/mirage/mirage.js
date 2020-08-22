@@ -2,8 +2,8 @@ import { Server, Model, Factory, Response } from "miragejs"
 import faker from "faker"
 
 const config = {
-  apiBaseUrl: "http://localhost:9000/",
-  namespace: "api/v1",
+  apiBaseUrl: process.env.REACT_APP_API_BASE_URL,
+  namespace: process.env.REACT_APP_API_NAMESPACE,
   lowLatencyTime: 100,  
   highLatencyTime: 1000,
   tokenValue: "TEST_TOKEN_VALUE"
