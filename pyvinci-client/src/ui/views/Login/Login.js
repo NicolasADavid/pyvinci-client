@@ -2,19 +2,19 @@ import React, {useState} from 'react'
 import { Redirect } from 'react-router-dom';
 import './Login.css';
 import ApiService from '../../../services/ApiService';
+import UserService from '../../../services/UserService';
 
 export function Login() {
 
     const [userName, setUserName] = useState("test");
     const [password, setPassword] = useState("test");
     const [success, setSuccess] = useState(false)
-    
+
     // const [waiting, setWaiting] = useState(false);
     // const [error, setError] = useState(false);
     // const [errorDetails, setErrorDetails] = useState("")
-
-    // validateUsername
-    // validatePassword
+    
+    const [isLoggedIn] = useState(UserService.isLoggedIn())
 
     function handleUsernameChange(event) {
         setUserName(event.target.value)
@@ -28,7 +28,7 @@ export function Login() {
         ApiService.login(userName, password)
             .then(res => {
                 if(res.status >= 200 && res.status < 300){
-                    localStorage.setItem("token", res.data.token)
+                    UserService.setUserData(res.data)
                     setSuccess(true)
                 }
             })
@@ -38,7 +38,7 @@ export function Login() {
     return (
         <div className="Login">
 
-            {success ? <Redirect to='/home' /> : null}
+            {success || isLoggedIn ? <Redirect to='/home' /> : null}
 
             <form onSubmit={handleSubmit}>
                 <label>

@@ -4,7 +4,7 @@ import ProjectsListProject from './ProjectsListProject/ProjectsListProject';
 
 export default function ProjectsList({projects}) {
 
-    const projectsListProjects = projects.map((project, index) =>
+    const projectsListProjects = projects?.map((project, index) =>
         <ProjectsListProject
             key={index}
             project={project}
@@ -14,7 +14,7 @@ export default function ProjectsList({projects}) {
     return (
         <div className={styles.container}>    
             List of projects: 
-            {projects.length ? 
+            {projects?.length ? 
                 <div>
                     {projectsListProjects}
                 </div>

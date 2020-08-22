@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Redirect } from 'react-router-dom';
 import './Register.css';
 import ApiService from '../../../services/ApiService';
+import UserService from '../../../services/UserService';
 
 export function Register() {
 
@@ -13,8 +14,7 @@ export function Register() {
     // const [error, setError] = useState(false);
     // const [errorDetails, setErrorDetails] = useState("")
 
-    // validateUsername
-    // validatePassword
+    const [isLoggedIn] = useState(UserService.isLoggedIn())
 
     function handleUsernameChange(event) {
         setUserName(event.target.value)
@@ -37,6 +37,7 @@ export function Register() {
     return (
         <div className="Register">
 
+            {isLoggedIn ? <Redirect to='/home' /> : null}
             {success ? <Redirect to='/login' /> : null}
 
             <form onSubmit={handleSubmit}>
