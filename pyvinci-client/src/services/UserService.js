@@ -61,6 +61,10 @@ const UserService = {
     getToken: function() {
         let data = this.getUserData()
         return data?.token
+    },
+
+    logOut: function() {
+        this.setUserData(null)
     }
 };
 

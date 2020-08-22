@@ -2,6 +2,7 @@ import React from 'react';
 
 import styles from './Nav.css'
 import { NavLink } from 'react-router-dom';
+import UserService from '../../../services/UserService';
 
 const links = [
     {
@@ -19,6 +20,10 @@ const links = [
 ]
 
 export default function Nav({isLoggedIn}) {
+
+    const logout = () => {
+        UserService.logOut()
+    }
 
     const linkElements = 
         links.filter(link => {
@@ -40,6 +45,7 @@ export default function Nav({isLoggedIn}) {
                 <ul>
                     {linkElements}
                 </ul>
+                {isLoggedIn && <button onClick={logout}>Log Out</button>}
             </nav>
         </div>
     )
