@@ -11,6 +11,9 @@ const config = {
 
 export function makeServer({ environment = "test" } = {}) {
   let server = new Server({
+    // serializers: {
+    //   application: RestSerializer,
+    // },
     models: {
       project: Model,
       user: Model,
@@ -75,18 +78,36 @@ export function makeServer({ environment = "test" } = {}) {
        * Projects
        */
       this.get("/users/:userId/projects", (schema, request) => {
-        if(request.requestHeaders["authorization"] != config.tokenValue) {
+        if(request.requestHeaders["authorization"] != `Bearer ${config.tokenValue}`) {
           return new Response(401, {}, { error: 'No Authorization header provided.'});
         }
-        return schema.db.projects
+        return new Response(
+          200, 
+          {}, 
+          {
+            projects: schema.db.projects
+          }
+        )
       })
       this.get("/users/:userId/projects/:id", (schema, request) => {
         let id = request.params.id
-        return schema.db.projects.find(id)
+        return new Response(
+          200,
+          {},
+          {
+            project: schema.db.projects.find(id)
+          }
+        )
       })
       this.post("/users/:userId/projects", (schema, request) => {
         const { name } = JSON.parse(request.requestBody)
-        return schema.db.projects.insert({name: name})
+        return new Response(
+          200,
+          {},
+          {
+            project: schema.db.projects.insert({name: name})
+          }
+        )
       })
     },
   })
