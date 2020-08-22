@@ -11,8 +11,8 @@ export function Home() {
 
     useEffect(() => {
         ApiService.getProjects()
-        .then(res => {
-            setProjects(res.data)
+        .then(projects => {
+            setProjects(projects)
         })
     }, []);
 

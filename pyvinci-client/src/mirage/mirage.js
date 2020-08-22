@@ -74,17 +74,17 @@ export function makeServer({ environment = "test" } = {}) {
       /**
        * Projects
        */
-      this.get("/projects", (schema, request) => {
+      this.get("/users/:userId/projects", (schema, request) => {
         if(request.requestHeaders["authorization"] != config.tokenValue) {
           return new Response(401, {}, { error: 'No Authorization header provided.'});
         }
         return schema.db.projects
       })
-      this.get("/projects/:id", (schema, request) => {
+      this.get("/users/:userId/projects/:id", (schema, request) => {
         let id = request.params.id
         return schema.db.projects.find(id)
       })
-      this.post("/projects", (schema, request) => {
+      this.post("/users/:userId/projects", (schema, request) => {
         const { name } = JSON.parse(request.requestBody)
         return schema.db.projects.insert({name: name})
       })

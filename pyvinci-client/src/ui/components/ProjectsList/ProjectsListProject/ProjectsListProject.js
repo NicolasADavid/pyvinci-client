@@ -7,7 +7,7 @@ export default function ProjectsListProject({project}) {
     return (
         <div className={styles.container}>
             <Link to={"/projects/"+project.id}>
-                {project.name}
+                {project.id}
             </Link>
         </div>
     )
