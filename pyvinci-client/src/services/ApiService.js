@@ -72,7 +72,58 @@ const ApiService = {
             console.error(err)
             throw err
         })
-    }
+    },
+    getImages: function(projectId) {
+        return Axios.get(`${apiUrl}/users/${userId}/projects/${projectId}/images`)
+        .then(res => {
+            if(res.status >= 200 && res.status < 300){
+                return res.data.images
+            } else {
+                throw new Error("getImages", res)
+            }
+        })
+        .catch(err => {
+            console.error(err)
+            throw err
+        })
+    },
+    postImages: function(projectId, images) {
+        const formData = new FormData()
+        formData.append(
+            'images',
+            images
+        )
+
+        return Axios.post(
+            `${apiUrl}/users/${userId}/projects/${projectId}/images`,
+            formData
+        ).then(res => {
+            if(res.status >= 200 && res.status < 300){
+                return res
+            } else {
+                throw new Error("postImages", res)
+            }
+        }).catch(err => {
+            console.error(err)
+            throw err
+        })
+    },
+    // getImage: function(projectId, imageId) {
+    // },
+    deleteImage: function(projectId, imageId) {
+        return Axios.delete(
+            `${apiUrl}/users/${userId}/projects/${projectId}/images/${imageId}`,
+        ).then(res => {
+            if(res.status >= 200 && res.status < 300){
+                return res
+            } else {
+                throw new Error("deleteImage", res)
+            }
+        }).catch(err => {
+            console.error(err)
+            throw err
+        })
+    },
 };
 
 export default ApiService;
