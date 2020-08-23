@@ -1,4 +1,4 @@
-import { Server, Model, Factory, Response } from "miragejs"
+import { Server, Model, Factory, Response, belongsTo, hasMany } from "miragejs"
 import faker from "faker"
 
 const config = {
@@ -6,7 +6,8 @@ const config = {
   namespace: process.env.REACT_APP_API_NAMESPACE,
   lowLatencyTime: 100,  
   highLatencyTime: 1000,
-  tokenValue: "TEST_TOKEN_VALUE"
+  tokenValue: "TEST_TOKEN_VALUE",
+  // testImageUrl: "https://pyvinci-storage.s3.amazonaws.com/users/97e1d77e-3d79-4bab-b21e-f0f1e775fa19/projects/ae027201-77dd-49e9-a5c9-e20333df0f45/3a0f255e-aff1-47d7-8e46-c9c03a99a823_1366003382850.jpg"
 }
 
 export function makeServer({ environment = "test" } = {}) {
@@ -17,6 +18,9 @@ export function makeServer({ environment = "test" } = {}) {
     models: {
       project: Model,
       user: Model,
+      image: Model.extend({
+        project: belongsTo(),
+      }),
     },
 
     factories: {
@@ -46,12 +50,29 @@ export function makeServer({ environment = "test" } = {}) {
         expireAt() {
           return faker.date.future()
         }
+      }),
+      image: Factory.extend({
+        // id() {
+        //   return faker.random.uuid()
+        // },
+        url() {
+          return faker.internet.url()
+          // return config.testImageUrl
+        },
+        createdAt() {
+          return faker.date.past()
+        },
+        updatedAt() {
+          return faker.date.past()
+        },
       })
     },
 
     seeds(server) {  
       server.createList("user", 1)
-      server.createList("project", 5)
+      server.createList("project", 5).forEach((project) => {
+        server.createList("image", 5, {project})
+      })
     },
 
     routes() {
@@ -89,13 +110,13 @@ export function makeServer({ environment = "test" } = {}) {
           }
         )
       })
-      this.get("/users/:userId/projects/:id", (schema, request) => {
-        let id = request.params.id
+      this.get("/users/:userId/projects/:projectId", (schema, request) => {
+        let projectId = request.params.projectId
         return new Response(
           200,
           {},
           {
-            project: schema.db.projects.find(id)
+            project: schema.db.projects.find(projectId)
           }
         )
       })
@@ -107,6 +128,56 @@ export function makeServer({ environment = "test" } = {}) {
           {
             project: schema.db.projects.insert({name: name})
           }
+        )
+      })
+
+      /**
+       * Images
+       */
+      this.get("users/:userId/projects/:projectId/images", (schema, request) => {
+        let projectId = request.params.projectId
+        return new Response(
+          200,
+          {},
+          {
+            images: schema.db.images.where({projectId: projectId})
+          }
+        )
+      })
+      this.post("users/:userId/projects/:projectId/images", (schema, request) => {
+        let projectId = request.params.projectId
+
+        // Check multipart form data included?
+        if(!request.sendArguments[0].get("images")){
+          return new Response(500, {}, { error: 'No Formdata.images included in request'});
+        }
+
+        // Add image
+        schema.db.images.insert({
+          createdAt: faker.date.past(),
+          updatedAt: faker.date.past(),
+          url: faker.internet.url(),
+          // url: config.testImageUrl,
+          projectId: projectId,
+        })
+
+        return new Response(
+          200,
+          {},
+          {
+            images: schema.db.images.where({projectId: projectId})
+          }
+        )
+      })
+      this.delete("users/:userId/projects/:projectId/images/:imageId", (schema, request) => {
+        let {projectId, imageId} = request.params
+
+        schema.db.images.remove(imageId)
+
+        return new Response(
+          200,
+          {},
+          {}
         )
       })
     },
