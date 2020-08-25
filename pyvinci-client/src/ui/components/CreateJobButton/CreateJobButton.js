@@ -9,7 +9,7 @@ export default function CreateJobButton({postJob, disabled}) {
 
     return (
         <div className={styles.container}>
-            <button onClick={onClick} disabled={disabled}>Begin modelling</button>
+            <button onClick={onClick} disabled={disabled}>Begin modeling</button>
         </div>
     )
 };

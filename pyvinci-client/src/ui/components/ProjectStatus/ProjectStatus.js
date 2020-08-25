@@ -15,10 +15,10 @@ export default function ProjectStatus({project, images, isModellingComplete}) {
           statusText = "Pending model"
           break;
         case "PENDING_LABELS":
-          statusText = "Modelling in progress.."
+          statusText = "Modeling in progress.."
           break;
         case "COMPLETED":
-          statusText = "Modelling completed"
+          statusText = "Modeling completed"
           break;
         default:
           statusText = status
@@ -36,7 +36,7 @@ export default function ProjectStatus({project, images, isModellingComplete}) {
                 </p>
 
                 <p>
-                    {isReadyToModel && <b>Ready to model! Add more images or click the "Begin modelling" button to proceed!</b>}
+                    {isReadyToModel && <b>Ready to model! Add more images or click the "Begin modeling" button to proceed!</b>}
                 </p>
 
                 <p>
