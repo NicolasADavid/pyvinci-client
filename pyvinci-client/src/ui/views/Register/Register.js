@@ -6,8 +6,8 @@ import UserService from '../../../services/UserService';
 
 export function Register() {
 
-    const [userName, setUserName] = useState("test");
-    const [password, setPassword] = useState("test");
+    const [userName, setUserName] = useState("");
+    const [password, setPassword] = useState("");
     const [success, setSuccess] = useState(false)
 
     // const [waiting, setWaiting] = useState(false);
@@ -43,11 +43,11 @@ export function Register() {
             <form onSubmit={handleSubmit}>
                 <label>
                     Username:
-                    <textarea value={userName} onChange={handleUsernameChange} />
+                    <input value={userName} onChange={handleUsernameChange} />
                 </label>
                 <label>
                     Password:
-                    <textarea value={password} onChange={handlePasswordChange} />
+                    <input value={password} onChange={handlePasswordChange} />
                 </label>
                 <input type="submit" value="Submit" />
             </form>
