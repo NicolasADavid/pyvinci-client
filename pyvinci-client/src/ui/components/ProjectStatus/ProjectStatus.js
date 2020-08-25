@@ -39,9 +39,19 @@ export default function ProjectStatus({project, images, isModellingComplete}) {
                     {isReadyToModel && <b>Ready to model! Add more images or click the "Begin modeling" button to proceed!</b>}
                 </p>
 
-                <p>
-                    {isModellingComplete && <b>Your labels produced by Pytorch are available next to their respective images! Create a new project to try again.</b>}
-                </p>
+                {isModellingComplete &&
+                    <div>
+                        <p>
+                            Your labels produced by Pytorch are available under their respective source images! Create a new project in Home to try again.
+                        </p>
+
+                        <h4>Coming soon:</h4>
+
+                        <p>
+                            You will be able to select labels from the available options and use another model that uses your label selection and the images of the project to generate new images using AI.
+                        </p>
+                    </div>
+                }
 
             </div>
         </div>
