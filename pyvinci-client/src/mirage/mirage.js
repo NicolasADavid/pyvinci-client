@@ -21,12 +21,22 @@ export function makeServer({ environment = "test" } = {}) {
       image: Model.extend({
         project: belongsTo(),
       }),
+      job: Model
     },
 
     factories: {
       project: Factory.extend({
         name() {
           return `Project ${faker.name.firstName()}`
+        },
+        keywords() {
+          return null
+        },
+        labels() {
+          return null
+        },
+        status() {
+          return ""
         },
       }),
       user: Factory.extend({
@@ -65,6 +75,14 @@ export function makeServer({ environment = "test" } = {}) {
         updatedAt() {
           return faker.date.past()
         },
+      }),
+      job: Factory.extend({
+        jobId(){
+          return faker.random.jobId()
+        },
+        status(){
+          return "PENDING_LABELS"
+        }
       })
     },
 
@@ -178,6 +196,27 @@ export function makeServer({ environment = "test" } = {}) {
           200,
           {},
           {}
+        )
+      })
+
+      /**
+       * Jobs
+       */
+      this.post("users/:userId/projects/:projectId/job", (schema, request) => {
+        
+        const { userId, projectId } = request.params
+        
+        const job = schema.db.jobs[0]
+        
+        // Change project status from null to PENDING_LABELS
+        // const project = 
+
+        // Eventually change status from PENDING_LABELS to
+
+        return new Response(
+          201,
+          {},
+          job
         )
       })
     },

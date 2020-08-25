@@ -8,15 +8,15 @@ import { Redirect } from 'react-router-dom';
 //TODO: Show error details
 export function CreateProject() {
 
-    const [projectName, setProjectName] = useState("testProjectName");
+    const [projectName, setProjectName] = useState("");
     const [success, setSuccess] = useState(false)
     // const [waiting, setWaiting] = useState(false);
     // const [error, setError] = useState(false);
     // const [errorDetails, setErrorDetails] = useState("")
 
-    function handleProjectNameChange(event) {
-        setProjectName(event.target.value)
-    }
+    // function handleProjectNameChange(event) {
+    //     setProjectName(event.target.value)
+    // }
 
     function handleSubmit(event) {
         ApiService.createProject(projectName)
@@ -32,11 +32,11 @@ export function CreateProject() {
             {success ? <Redirect to='/home' /> : null}
 
             <form onSubmit={handleSubmit}>
-                <label>
+                {/* <label>
                     Project Name:
                     <textarea value={projectName} onChange={handleProjectNameChange} />
-                </label>
-                <input type="submit" value="Submit" />
+                </label> */}
+                <input type="submit" value="Create project" />
             </form>
         </div>
     )

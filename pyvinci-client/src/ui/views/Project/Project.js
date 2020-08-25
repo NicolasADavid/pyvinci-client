@@ -5,23 +5,31 @@ import ApiService from '../../../services/ApiService';
 import ProjectInfo from '../../components/ProjectInfo/ProjectInfo';
 import ImageUploader from '../../components/ImageUploader/ImageUploader';
 import ProjectImages from '../../components/ProjectImages/ProjectImages';
+import CreateJobButton from '../../components/CreateJobButton/CreateJobButton';
 
 export function Project() {
 
-    const {id} = useParams();
+    const {id: projectId} = useParams();
     
     const [project, setProject] = useState();
     const [images, setImages] = useState([]);
+
+    const fetchProject = () => {
+        ApiService.getProject(projectId)
+        .then(data => {
+            setProject(data)
+        })
+    }
     
     const fetchImages = () => {
-        ApiService.getImages(id)
+        ApiService.getImages(projectId)
         .then(data => {
             setImages(data)
         })
     }
 
     const uploadImages = (images) => {
-        ApiService.postImages(id, images)
+        ApiService.postImages(projectId, images)
         .then(res => {
             // Get images after uploading
             fetchImages()
@@ -29,7 +37,7 @@ export function Project() {
     }
     
     const deleteImage = (imageId) => {
-        ApiService.deleteImage(id, imageId)
+        ApiService.deleteImage(projectId, imageId)
         .then(data => {
             // Get images after deleting
             fetchImages()
@@ -40,18 +48,23 @@ export function Project() {
         console.log("Clicked image: ", images[index])
     }
 
+    const postJob = () => {
+        console.log("postJob")
+        ApiService.postJob(projectId)
+        .then(res => {
+            fetchProject()
+        })
+    }
+
     // Get project data
     useEffect(() => {
-        ApiService.getProject(id)
-        .then(data => {
-            setProject(data)
-        })
-    }, [id]);
+        fetchProject()
+    }, [projectId]);
 
     // Get project images
     useEffect(() => {
         fetchImages()
-    }, [id]);
+    }, [projectId]);
 
     return (
         <div className="Project">
@@ -60,6 +73,7 @@ export function Project() {
                     <ProjectInfo project={project} />
                     <ImageUploader upload={uploadImages}/>
                     <ProjectImages images={images} onClick={onImageClick} deleteImage={deleteImage}/>
+                    <CreateJobButton project={project} postJob={postJob} />
                 </div> :
                 <div>
                     Loading...
