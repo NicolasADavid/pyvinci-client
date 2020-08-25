@@ -42,7 +42,7 @@ export default function ProjectStatus({project, images, isModellingComplete}) {
                 {isModellingComplete &&
                     <div>
                         <p>
-                            Your labels produced by Pytorch are available under their respective source images! Create a new project in Home to try again.
+                            Your labels produced by Pytorch are available under their respective source images! <b>Create a new project in Home to try again.</b>
                         </p>
 
                         <h4>Coming soon:</h4>
