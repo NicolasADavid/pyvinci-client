@@ -1,21 +1,15 @@
 import React from 'react';
 import styles from './CreateJobButton.module.css'
 
-export default function CreateJobButton({project, postJob}) {
+export default function CreateJobButton({postJob, disabled}) {
 
     const onClick = () => {
-        
-        // TODO: Don't retry if project is PENDING_LABELS
-        // if(project.status !== "PENDING_LABELS")
-
-        // TODO: Don't post a job if no images are present
-
         postJob()
     }
 
     return (
         <div className={styles.container}>
-            <button onClick={onClick}>Create a job</button>
+            <button onClick={onClick} disabled={disabled}>Begin modelling</button>
         </div>
     )
 };

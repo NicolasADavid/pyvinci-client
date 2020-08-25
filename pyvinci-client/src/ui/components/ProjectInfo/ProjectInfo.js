@@ -5,17 +5,9 @@ export default function ProjectInfo({project}) {
 
     return (
         <div className={styles.container}>
-            
-            Project Information:
-
-            <div>
-                ID: {project.id}
-            </div>
-
-            <div>
-                Keywords: {project.keywords ? project.keywords : "No keywords"}
-            </div>
-            
+            <h4>
+                Project ID: {project.id}
+            </h4>
         </div>
     )
 };

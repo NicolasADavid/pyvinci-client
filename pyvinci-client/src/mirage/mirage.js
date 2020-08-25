@@ -88,8 +88,8 @@ export function makeServer({ environment = "test" } = {}) {
 
     seeds(server) {  
       server.createList("user", 1)
-      server.createList("project", 5).forEach((project) => {
-        server.createList("image", 5, {project})
+      server.createList("project", 2).forEach((project) => {
+        server.createList("image", 2, {project})
       })
     },
 

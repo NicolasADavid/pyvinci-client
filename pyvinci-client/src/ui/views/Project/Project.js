@@ -6,6 +6,7 @@ import ProjectInfo from '../../components/ProjectInfo/ProjectInfo';
 import ImageUploader from '../../components/ImageUploader/ImageUploader';
 import ProjectImages from '../../components/ProjectImages/ProjectImages';
 import CreateJobButton from '../../components/CreateJobButton/CreateJobButton';
+import ProjectStatus from '../../components/ProjectStatus/ProjectStatus';
 
 export function Project() {
 
@@ -49,10 +50,14 @@ export function Project() {
     }
 
     const postJob = () => {
-        console.log("postJob")
+        // console.log("postJob")
         ApiService.postJob(projectId)
         .then(res => {
+            // console.log("fetchProject after postJob")
             fetchProject()
+            // .then(res =>{
+                // console.log("fetchProject after postJob response")
+            // })
         })
     }
 
@@ -65,7 +70,6 @@ export function Project() {
     useEffect(() => {
         fetchImages()
     }, [projectId]);
-
 
     const [interval, setTheInterval] = useState()
 
@@ -97,16 +101,21 @@ export function Project() {
             }
         }
     }, [project])
-    
+
+    const hasImages = images.length > 0
+    const isModelling = project?.status == "PENDING_LABELS"
+    const isModellingComplete = project?.status == "COMPLETE"
+    const hasModellingStarted = isModellingComplete || isModellingComplete
+
     return (
         <div className="Project">
             {project ? 
                 <div>
                     <ProjectInfo project={project} />
-                    <ImageUploader upload={uploadImages}/>
+                    {!hasModellingStarted && <ImageUploader upload={uploadImages}/>}
                     <ProjectImages images={images} onClick={onImageClick} deleteImage={deleteImage}/>
-                    <CreateJobButton project={project} postJob={postJob} />
-                    {/* <ProjectStatus project={project} /> */}
+                    <ProjectStatus project={project} images={images} isModellingComplete={isModellingComplete}/>
+                    {!isModelling && !isModellingComplete && <CreateJobButton project={project} postJob={postJob} disabled={!hasImages}/>}
                 </div> :
                 <div>
                     Loading...

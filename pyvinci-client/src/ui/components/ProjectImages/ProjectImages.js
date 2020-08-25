@@ -44,7 +44,7 @@ export default function ProjectImages({images, onClick, deleteImage}) {
                             <button onClick={handleDeleteClick(image.id)}>Delete</button>
 
                             <div className="labels-container">
-                                    {labelWordElements}
+                                {labelWordElements}
                             </div>
 
                         </div>
