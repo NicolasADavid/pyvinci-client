@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import './Home.css';
+import styles from './Home.module.css';
 import ProjectsList from '../../components/ProjectsList/ProjectsList';
 import { CreateProject } from '../CreateProject/CreateProject';
 import ApiService from '../../../services/ApiService';
@@ -22,7 +22,7 @@ export function Home() {
     }
 
     return (
-        <div className="Home">
+        <div className={styles.container}>
             {projects ?
                 <div>
                     <ProjectsList projects={projects}/>
@@ -33,7 +33,7 @@ export function Home() {
             }
             <div>
                 <button onClick={openCreateProject}>
-                    Create Project
+                    Create New Project
                 </button>
 
                 {navigateToNewProject ? <Redirect to='/projects/new' /> : null}

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ProjectsList.css'
+import styles from './ProjectsList.module.css'
 import ProjectsListProject from './ProjectsListProject/ProjectsListProject';
 
 export default function ProjectsList({projects}) {
@@ -13,7 +13,7 @@ export default function ProjectsList({projects}) {
 
     return (
         <div className={styles.container}>    
-            List of projects: 
+            <h2>Your projects:</h2> 
             {projects?.length ? 
                 <div>
                     {projectsListProjects}

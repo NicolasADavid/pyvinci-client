@@ -6,7 +6,7 @@ export default function ProjectInfo({project}) {
     return (
         <div className={styles.container}>
             <h4>
-                Project ID: {project.id}
+                Project Name: {project.name}
             </h4>
         </div>
     )
