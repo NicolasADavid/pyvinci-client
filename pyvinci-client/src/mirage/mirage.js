@@ -1,4 +1,4 @@
-import { Server, Model, Factory, Response, belongsTo, hasMany } from "miragejs"
+import { Server, Model, Factory, Response, belongsTo } from "miragejs"
 import faker from "faker"
 
 const config = {
@@ -117,7 +117,7 @@ export function makeServer({ environment = "test" } = {}) {
        * Projects
        */
       this.get("/users/:userId/projects", (schema, request) => {
-        if(request.requestHeaders["authorization"] != `Bearer ${config.tokenValue}`) {
+        if(request.requestHeaders["authorization"] !== `Bearer ${config.tokenValue}`) {
           return new Response(401, {}, { error: 'No Authorization header provided.'});
         }
         return new Response(
@@ -188,7 +188,7 @@ export function makeServer({ environment = "test" } = {}) {
         )
       })
       this.delete("users/:userId/projects/:projectId/images/:imageId", (schema, request) => {
-        let {projectId, imageId} = request.params
+        let { imageId } = request.params
 
         schema.db.images.remove(imageId)
 
@@ -203,15 +203,23 @@ export function makeServer({ environment = "test" } = {}) {
        * Jobs
        */
       this.post("users/:userId/projects/:projectId/job", (schema, request) => {
-        
-        const { userId, projectId } = request.params
-        
-        const job = schema.db.jobs[0]
-        
-        // Change project status from null to PENDING_LABELS
-        // const project = 
 
-        // Eventually change status from PENDING_LABELS to
+        const { projectId } = request.params
+        
+        const job = schema.db.jobs.insert()
+
+        // Set project status to PENDING_LABELS
+        var project = schema.projects.find(projectId)
+        project.update({status: "PENDING_LABELS"})
+
+        // Update project status to completed
+        const updateProjectStatus = () => {
+          console.log("Updating project status to COMPLETED")
+          var project = schema.projects.find(projectId)
+          project.update({status: "COMPLETED"})
+        }
+        // After 5 seconds
+        setTimeout(updateProjectStatus, 5000);
 
         return new Response(
           201,

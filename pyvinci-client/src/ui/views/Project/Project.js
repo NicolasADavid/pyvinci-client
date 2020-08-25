@@ -15,7 +15,7 @@ export function Project() {
     const [images, setImages] = useState([]);
 
     const fetchProject = () => {
-        ApiService.getProject(projectId)
+        return ApiService.getProject(projectId)
         .then(data => {
             setProject(data)
         })
@@ -27,7 +27,7 @@ export function Project() {
             setImages(data)
         })
     }
-
+    
     const uploadImages = (images) => {
         ApiService.postImages(projectId, images)
         .then(res => {
@@ -66,11 +66,38 @@ export function Project() {
         fetchImages()
     }, [projectId]);
 
-    /**
-     * TODO: If project.status == "PENDING_LABELS", periodically refresh 
-     * the project in order to receive labels when they become available
-     */
 
+    const [interval, setTheInterval] = useState()
+
+    useEffect(() => {
+
+        // console.log("Interval effect")
+
+        if(project?.status == "PENDING_LABELS"){
+
+            // console.log("Status is pending..")
+
+            if(!interval){
+                setTheInterval(
+                    setInterval(() => {
+                        // console.log('Interval..');
+                        fetchProject()
+                    }, 2000)
+                )
+            }
+        } else {
+
+            // console.log("Status is not pending..")
+
+            if(interval){
+                // console.log("Clear interval")
+                clearInterval(interval)
+                // console.log("Get your data!")
+                fetchImages()
+            }
+        }
+    }, [project])
+    
     return (
         <div className="Project">
             {project ? 
@@ -79,6 +106,7 @@ export function Project() {
                     <ImageUploader upload={uploadImages}/>
                     <ProjectImages images={images} onClick={onImageClick} deleteImage={deleteImage}/>
                     <CreateJobButton project={project} postJob={postJob} />
+                    {/* <ProjectStatus project={project} /> */}
                 </div> :
                 <div>
                     Loading...
