@@ -66,6 +66,11 @@ export function Project() {
         fetchImages()
     }, [projectId]);
 
+    /**
+     * TODO: If project.status == "PENDING_LABELS", periodically refresh 
+     * the project in order to receive labels when they become available
+     */
+
     return (
         <div className="Project">
             {project ? 
