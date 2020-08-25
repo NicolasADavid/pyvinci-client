@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom';
 //TODO: Show error details
 export function CreateProject() {
 
-    const [projectName, setProjectName] = useState("");
+    const [projectName] = useState("");
     const [success, setSuccess] = useState(false)
     // const [waiting, setWaiting] = useState(false);
     // const [error, setError] = useState(false);
@@ -27,7 +27,7 @@ export function CreateProject() {
     }
 
     return (
-        <div className="CreateProject">
+        <div className={styles.container}>
 
             {success ? <Redirect to='/home' /> : null}
 

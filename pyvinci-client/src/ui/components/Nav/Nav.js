@@ -28,7 +28,7 @@ export default function Nav({isLoggedIn}) {
     const linkElements = 
         links.filter(link => {
             // Remove "Register" and "Login" when logged in
-            return !isLoggedIn || !(link.title == "Register" || link.title == "Login")
+            return !isLoggedIn || !(link.title === "Register" || link.title === "Login")
         })
         .map(
             (link, index) =>

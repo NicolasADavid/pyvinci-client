@@ -38,7 +38,7 @@ export default function ProjectImages({images, onClick, deleteImage}) {
                             >
                                 <img 
                                     src={url} 
-                                    // alt={description}
+                                    alt={"Uploaded photo"}
                                 />
                             </a>
                             <button onClick={handleDeleteClick(image.id)}>Delete</button>
