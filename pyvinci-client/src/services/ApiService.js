@@ -124,6 +124,20 @@ const ApiService = {
             throw err
         })
     },
+    postJob: function(projectId) {
+        return Axios.post(`${apiUrl}/users/${userId}/projects/${projectId}/job`)
+        .then(res => {
+            if(res.status >= 200 && res.status < 300){
+                return res.data // Correct?
+            } else {
+                throw new Error("postJob", res)
+            }
+        })
+        .catch(err => {
+            console.error(err)
+            throw err
+        })
+    }
 };
 
 export default ApiService;

@@ -10,3 +10,7 @@ img {
 button {
     display: inline-block;
 }
+
+.labels-container {
+    margin: .4rem;
+}

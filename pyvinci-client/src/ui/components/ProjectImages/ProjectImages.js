@@ -16,11 +16,19 @@ export default function ProjectImages({images, onClick, deleteImage}) {
         e.preventDefault()
         deleteImage(id)
     })
-
     const imageElements = (
         <ul className="card-list">
             {images.map((image, index) => {
                 const url = image.url
+
+                const labelWordElements = image.labels?.map((label, index) => {
+                    return (
+                        <b key={index}>
+                            {label},&nbsp;
+                        </b>
+                    )
+                })
+
                 return (
                     <li className="card" key={index} onClick={handleOnClick(index)}>
                         <div>
@@ -30,10 +38,15 @@ export default function ProjectImages({images, onClick, deleteImage}) {
                             >
                                 <img 
                                     src={url} 
-                                    // alt={description}
+                                    alt={"Uploaded photo"}
                                 />
                             </a>
                             <button onClick={handleDeleteClick(image.id)}>Delete</button>
+
+                            <div className="labels-container">
+                                {labelWordElements}
+                            </div>
+
                         </div>
                     </li>
                 )

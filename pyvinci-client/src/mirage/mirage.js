@@ -1,4 +1,4 @@
-import { Server, Model, Factory, Response, belongsTo, hasMany } from "miragejs"
+import { Server, Model, Factory, Response, belongsTo } from "miragejs"
 import faker from "faker"
 
 const config = {
@@ -21,12 +21,22 @@ export function makeServer({ environment = "test" } = {}) {
       image: Model.extend({
         project: belongsTo(),
       }),
+      job: Model
     },
 
     factories: {
       project: Factory.extend({
         name() {
           return `Project ${faker.name.firstName()}`
+        },
+        keywords() {
+          return null
+        },
+        labels() {
+          return null
+        },
+        status() {
+          return ""
         },
       }),
       user: Factory.extend({
@@ -65,13 +75,21 @@ export function makeServer({ environment = "test" } = {}) {
         updatedAt() {
           return faker.date.past()
         },
+      }),
+      job: Factory.extend({
+        jobId(){
+          return faker.random.jobId()
+        },
+        status(){
+          return "PENDING_LABELS"
+        }
       })
     },
 
     seeds(server) {  
       server.createList("user", 1)
-      server.createList("project", 5).forEach((project) => {
-        server.createList("image", 5, {project})
+      server.createList("project", 2).forEach((project) => {
+        server.createList("image", 2, {project})
       })
     },
 
@@ -99,7 +117,7 @@ export function makeServer({ environment = "test" } = {}) {
        * Projects
        */
       this.get("/users/:userId/projects", (schema, request) => {
-        if(request.requestHeaders["authorization"] != `Bearer ${config.tokenValue}`) {
+        if(request.requestHeaders["authorization"] !== `Bearer ${config.tokenValue}`) {
           return new Response(401, {}, { error: 'No Authorization header provided.'});
         }
         return new Response(
@@ -170,7 +188,7 @@ export function makeServer({ environment = "test" } = {}) {
         )
       })
       this.delete("users/:userId/projects/:projectId/images/:imageId", (schema, request) => {
-        let {projectId, imageId} = request.params
+        let { imageId } = request.params
 
         schema.db.images.remove(imageId)
 
@@ -178,6 +196,35 @@ export function makeServer({ environment = "test" } = {}) {
           200,
           {},
           {}
+        )
+      })
+
+      /**
+       * Jobs
+       */
+      this.post("users/:userId/projects/:projectId/job", (schema, request) => {
+
+        const { projectId } = request.params
+        
+        const job = schema.db.jobs.insert()
+
+        // Set project status to PENDING_LABELS
+        var project = schema.projects.find(projectId)
+        project.update({status: "PENDING_LABELS"})
+
+        // Update project status to completed
+        const updateProjectStatus = () => {
+          console.log("Updating project status to COMPLETED")
+          var project = schema.projects.find(projectId)
+          project.update({status: "COMPLETED"})
+        }
+        // After 5 seconds
+        setTimeout(updateProjectStatus, 5000);
+
+        return new Response(
+          201,
+          {},
+          job
         )
       })
     },
